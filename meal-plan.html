@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Meal Plan — April 27 – May 3</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a18; padding: 1.5rem 1rem; }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 500; margin-bottom: 2px; }
+  .sub { font-size: 13px; color: #5f5e5a; margin-bottom: 1.25rem; }
+  .header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; }
+  .avatars { display: flex; gap: 8px; align-items: center; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; }
+  .avatar-you { background: #e1f5ee; color: #0f6e56; }
+  .avatar-k { background: #eeedfe; color: #534ab7; }
+  .slabel { font-size: 10px; letter-spacing: 0.08em; color: #888780; text-transform: uppercase; margin: 0 0 6px; }
+  .pill { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 20px; }
+  .pill-green { background: #eaf3de; color: #3b6d11; }
+  .pill-amber { background: #faeeda; color: #854f0b; }
+  .pill-red { background: #faece7; color: #993c1d; }
+  .pill-teal { background: #e1f5ee; color: #0f6e56; }
+  .pill-purple { background: #eeedfe; color: #534ab7; }
+  .person-tabs { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .ptab { padding: 7px 20px; border-radius: 20px; border: 0.5px solid #b4b2a9; background: transparent; font-size: 13px; cursor: pointer; color: #5f5e5a; font-family: inherit; }
+  .ptab.active { background: #1a1a18; color: #ffffff; border-color: #1a1a18; }
+  .ptab:hover:not(.active) { background: #f1efe8; }
+  .day-nav { display: flex; gap: 6px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .dnav { padding: 5px 12px; border-radius: 20px; border: 0.5px solid #d3d1c7; background: #f1efe8; font-size: 12px; cursor: pointer; color: #5f5e5a; font-family: inherit; }
+  .dnav.active { background: #1d9e75; color: #e1f5ee; border-color: #1d9e75; }
+  .dnav:hover:not(.active) { background: #d3d1c7; }
+  .goals-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; margin-bottom: 1rem; }
+  .gcard { background: #f1efe8; border-radius: 8px; padding: 8px 10px; }
+  .gcard .gv { font-size: 18px; font-weight: 500; color: #1a1a18; }
+  .gcard .gl { font-size: 10px; color: #5f5e5a; }
+  .gcard .gs { font-size: 10px; color: #888780; margin-top: 1px; }
+  .meal-row { background: #ffffff; border: 0.5px solid #d3d1c7; border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; }
+  .meal-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 12px; }
+  .meal-name { font-size: 14px; font-weight: 500; color: #1a1a18; }
+  .meal-desc { font-size: 11px; color: #5f5e5a; margin-top: 2px; }
+  .meal-cal { font-size: 13px; font-weight: 500; color: #1a1a18; text-align: right; white-space: nowrap; flex-shrink: 0; }
+  .meal-cal span { display: block; font-size: 10px; color: #5f5e5a; font-weight: 400; }
+  .macros { display: flex; gap: 6px; margin-bottom: 6px; }
+  .mp { flex: 1; background: #f1efe8; border-radius: 6px; padding: 5px 6px; text-align: center; }
+  .mp .mv { font-size: 13px; font-weight: 500; color: #1a1a18; }
+  .mp .ml { font-size: 9px; color: #5f5e5a; }
+  .side-note { border-left: 2px solid #d3d1c7; margin-top: 8px; padding: 4px 10px; font-size: 11px; color: #5f5e5a; }
+  .tip-text { font-size: 11px; color: #5f5e5a; margin-left: 8px; }
+  .divider { border: none; border-top: 0.5px solid #d3d1c7; margin: 1rem 0; }
+  .total-box { background: #f1efe8; border-radius: 12px; padding: 12px 14px; }
+  .total-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .total-lbl { font-size: 12px; color: #5f5e5a; }
+  .total-val { font-size: 17px; font-weight: 500; color: #1a1a18; }
+  .macro-line { display: flex; gap: 14px; font-size: 11px; color: #5f5e5a; margin: 6px 0; flex-wrap: wrap; }
+  .macro-line b { color: #1a1a18; font-weight: 500; }
+  .rem-tag { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-top: 4px; }
+  .week-section { background: #f1efe8; border-radius: 12px; padding: 12px 14px; margin-bottom: 1rem; }
+  .week-chart-row { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 6px; margin: 8px 0; }
+  .wday { text-align: center; }
+  .wday-lbl { font-size: 9px; color: #888780; margin-bottom: 4px; line-height: 1.3; }
+  .wday-bar-bg { background: #d3d1c7; border-radius: 4px; height: 52px; display: flex; align-items: flex-end; overflow: hidden; }
+  .wday-bar { width: 100%; border-radius: 4px 4px 0 0; }
+  .wday-val { font-size: 9px; color: #5f5e5a; margin-top: 3px; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: #5f5e5a; margin-bottom: 8px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 4px; }
+  .highlights { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .hl { padding: 8px 10px; background: #ffffff; border: 0.5px solid #d3d1c7; border-radius: 8px; font-size: 12px; color: #5f5e5a; }
+  .hl b { color: #1a1a18; font-weight: 500; }
+  @media (max-width: 480px) {
+    .goals-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .week-chart-row { gap: 3px; }
+    .wday-lbl { font-size: 8px; }
+    .wday-val { font-size: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header-row">
+    <div>
+      <h1>Weekly meal plan</h1>
+      <p class="sub">April 27 – May 3 · weight loss goals</p>
+    </div>
+    <div class="avatars">
+      <div class="avatar avatar-you">You</div>
+      <div class="avatar avatar-k">K</div>
+    </div>
+  </div>
+
+  <div class="person-tabs">
+    <button class="ptab active" onclick="setPerson('you')" id="ptab-you">You</button>
+    <button class="ptab" onclick="setPerson('kelsey')" id="ptab-kelsey">Kelsey</button>
+    <button class="ptab" onclick="setPerson('week')" id="ptab-week">Week overview</button>
+  </div>
+
+  <div id="content-you">
+    <div class="goals-grid">
+      <div class="gcard"><div class="gv">1,650</div><div class="gl">Calorie goal</div><div class="gs">daily deficit</div></div>
+      <div class="gcard"><div class="gv">130g</div><div class="gl">Protein</div><div class="gs">preserve muscle</div></div>
+      <div class="gcard"><div class="gv">45g</div><div class="gl">Fat</div><div class="gs">~25% of cals</div></div>
+      <div class="gcard"><div class="gv">165g</div><div class="gl">Carbs</div><div class="gs">~40% of cals</div></div>
+    </div>
+    <div class="day-nav" id="day-nav-you"></div>
+    <div id="day-content-you"></div>
+  </div>
+
+  <div id="content-kelsey" style="display:none">
+    <div class="goals-grid">
+      <div class="gcard"><div class="gv">1,450</div><div class="gl">Calorie goal</div><div class="gs">daily deficit</div></div>
+      <div class="gcard"><div class="gv">100g</div><div class="gl">Protein</div><div class="gs">preserve muscle</div></div>
+      <div class="gcard"><div class="gv">40g</div><div class="gl">Fat</div><div class="gs">~25% of cals</div></div>
+      <div class="gcard"><div class="gv">145g</div><div class="gl">Carbs</div><div class="gs">~40% of cals</div></div>
+    </div>
+    <div class="day-nav" id="day-nav-kelsey"></div>
+    <div id="day-content-kelsey"></div>
+  </div>
+
+  <div id="content-week" style="display:none">
+    <p class="slabel">Calorie tracker — your goal: 1,650/day · Kelsey's goal: 1,450/day</p>
+    <div class="week-section">
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#1d9e75"></span>You</span>
+        <span><span class="legend-dot" style="background:#7f77dd"></span>Kelsey</span>
+      </div>
+      <div class="week-chart-row">
+        <div class="wday"><div class="wday-lbl">Mon Apr 27</div><div class="wday-bar-bg"><div class="wday-bar" style="height:65%;background:#1d9e75"></div></div><div class="wday-val" style="color:#1d9e75;font-weight:500">1,070</div></div>
+        <div class="wday"><div class="wday-lbl">Tue Apr 28</div><div class="wday-bar-bg"><div class="wday-bar" style="height:79%;background:#1d9e75"></div></div><div class="wday-val" style="color:#1d9e75;font-weight:500">1,310</div></div>
+        <div class="wday"><div class="wday-lbl">Wed Apr 29</div><div class="wday-bar-bg"><div class="wday-bar" style="height:72%;background:#ef9f27"></div></div><div class="wday-val" style="color:#854f0b;font-weight:500">1,180</div></div>
+        <div class="wday"><div class="wday-lbl">Thu Apr 30</div><div class="wday-bar-bg"><div class="wday-bar" style="height:64%;background:#1d9e75"></div></div><div class="wday-val" style="color:#1d9e75;font-weight:500">1,050</div></div>
+        <div class="wday"><div class="wday-lbl">Fri May 1</div><div class="wday-bar-bg"><div class="wday-bar" style="height:55%;background:#b4b2a9"></div></div><div class="wday-val">varies</div></div>
+        <div class="wday"><div class="wday-lbl">Sat May 2</div><div class="wday-bar-bg"><div class="wday-bar" style="height:81%;background:#ef9f27"></div></div><div class="wday-val" style="color:#854f0b;font-weight:500">1,340</div></div>
+        <div class="wday"><div class="wday-lbl">Sun May 3</div><div class="wday-bar-bg"><div class="wday-bar" style="height:72%;background:#1d9e75"></div></div><div class="wday-val" style="color:#1d9e75;font-weight:500">1,180</div></div>
+      </div>
+      <div class="week-chart-row">
+        <div class="wday"><div class="wday-bar-bg"><div class="wday-bar" style="height:55%;background:#7f77dd"></div></div><div class="wday-val" style="color:#534ab7;font-weight:500">920</div></div>
+        <div class="wday"><div class="wday-bar-bg"><div class="wday-bar" style="height:86%;background:#ef9f27"></div></div><div class="wday-val" style="color:#854f0b;font-weight:500">1,240</div></div>
+        <div class="wday"><div class="wday-bar-bg"><div class="wday-bar" style="height:81%;background:#7f77dd"></div></div><div class="wday-val" style="color:#534ab7;font-weight:500">1,180</div></div>
+        <div class="wday"><div class="wday-bar-bg"><div class="wday-bar" style="height:72%;background:#7f77dd"></div></div><div class="wday-val" style="color:#534ab7;font-weight:500">1,050</div></div>
+        <div class="wday"><div class="wday-bar-bg"><div class="wday-bar" style="height:55%;background:#b4b2a9"></div></div><div class="wday-val">varies</div></div>
+        <div class="wday"><div class="wday-bar-bg"><div class="wday-bar" style="height:81%;background:#ef9f27"></div></div><div class="wday-val" style="color:#854f0b;font-weight:500">1,180</div></div>
+        <div class="wday"><div class="wday-bar-bg"><div class="wday-bar" style="height:70%;background:#7f77dd"></div></div><div class="wday-val" style="color:#534ab7;font-weight:500">1,020</div></div>
+      </div>
+      <p style="font-size:10px;color:#888780;margin-top:8px;">Top row = You · Bottom row = Kelsey. Orange = slightly elevated fat or carbs. Friday varies by restaurant.</p>
+    </div>
+
+    <p class="slabel">Week highlights</p>
+    <div class="highlights">
+      <div class="hl">Best protein day: <b>Thursday Apr 30 — shrimp scampi zoodles, 42g protein at dinner alone</b></div>
+      <div class="hl">Lowest calorie day: <b>Monday Apr 27 (you: 1,070 · Kelsey: 920) — great start to the week</b></div>
+      <div class="hl">Highest carb day: <b>Wednesday Apr 29 — breakfast cake + pot roast + meatloaf with mash stacked up</b></div>
+      <div class="hl">Fat watch days: <b>Saturday May 2 — avocado + chipotle mayo + fries. Go light on the mayo</b></div>
+      <div class="hl">Kelsey's matcha note: <b>Tuesday Apr 28 — skip brownie that night, ask for 1 pump syrup</b></div>
+      <div class="hl">Brownie days: <b>Monday, Thursday, Sunday — lowest carb days. Skip Wed and Sat</b></div>
+      <div class="hl">Biggest win: <b>Every dinner is whole-food, home-cooked, and protein-diverse all week</b></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var person = 'you';
+var dayIdx = { you: 0, kelsey: 0 };
+var DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var DATES = ['Apr 27','Apr 28','Apr 29','Apr 30','May 1','May 2','May 3'];
+
+var data = {
+  you: [
+    { total: 1070, note: '~580 kcal remaining — add snacks or a larger side at dinner', noteType: 'green',
+      meals: [
+        { label: 'Veggie frittata', desc: 'Breakfast · 2 servings recommended', cal: 440, kcalLabel: '2 servings', p:34, f:24, c:14, fi:4, pill:'green', pillText:'eat 2 servings', tip:'Strong protein start — holds you through to lunch' },
+        { label: 'Turkey spinach burgers', desc: 'Lunch · 1 patty', cal: 210, kcalLabel: 'per patty', p:22, f:11, c:7, fi:1, pill:'teal', pillText:'good as-is', tip:'Pair with a side salad to boost fiber' },
+        { label: 'Drumstick + green beans', desc: 'Dinner · 1 drumstick + 1 serving green beans', cal: 360, kcalLabel: 'combined', p:31, f:18, c:13, fi:4, pill:'teal', pillText:'well-balanced', tip:'Green beans add great fiber and volume' },
+        { label: 'Black bean brownies', desc: 'Dessert · 1 piece', cal: 130, kcalLabel: 'per piece', p:5, f:5, c:18, fi:3, pill:'green', pillText:'go for it today', tip:'Low carb day — Monday is a brownie day' }
+      ]},
+    { total: 1310, note: '~340 kcal remaining — light snack like Greek yogurt or fruit', noteType: 'green',
+      meals: [
+        { label: 'Veggie frittata', desc: 'Breakfast · 2 servings', cal: 440, kcalLabel: '2 servings', p:34, f:24, c:14, fi:4, pill:'teal', pillText:'strong start', tip:'Consistent 2-serving breakfast — good protein base' },
+        { label: 'Leftover drumstick + green beans', desc: 'Lunch · reheated from Monday', cal: 360, kcalLabel: 'combined', p:31, f:18, c:13, fi:4, pill:'teal', pillText:'great leftover', tip:'High protein, solid fiber lunch' },
+        { label: 'Classic pot roast', desc: 'Dinner · 1 serving (1/8 recipe)', cal: 380, kcalLabel: 'per serving', p:38, f:14, c:22, fi:4, pill:'teal', pillText:'excellent', tip:'Sweet potato + carrots add natural carbs and fiber' },
+        { label: 'Black bean brownies', desc: 'Dessert · skip tonight', cal: 0, kcalLabel: 'skip tonight', p:0, f:0, c:0, fi:0, pill:'amber', pillText:'skip tonight', tip:'Close to calorie goal — save it for Thursday' }
+      ]},
+    { total: 1180, note: '~470 kcal remaining — use on protein-focused snacks, not more carbs', noteType: 'amber',
+      meals: [
+        { label: 'Cinnamon-walnut breakfast cake', desc: 'Breakfast · 1 slice + 2 eggs on the side', cal: 440, kcalLabel: 'cake + 2 eggs', p:21, f:24, c:38, fi:3, pill:'amber', pillText:'higher carb', tip:'1 slice max — eggs on the side are essential for protein' },
+        { label: 'Leftover pot roast', desc: 'Lunch · 1 serving (1/8 recipe)', cal: 380, kcalLabel: 'per serving', p:38, f:14, c:22, fi:4, pill:'teal', pillText:'great protein lunch', tip:'Offsets the lighter breakfast protein well' },
+        { label: 'Classic meatloaf + mashed potatoes', desc: 'Dinner · 1 serving meatloaf + 1 serving mash', cal: 510, kcalLabel: 'combined', p:36, f:15, c:48, fi:4, pill:'amber', pillText:'high carb day', tip:'Skip the brownie — high carb from cake + mash today' },
+        { label: 'Black bean brownies', desc: 'Dessert · skip tonight', cal: 0, kcalLabel: 'skip tonight', p:0, f:0, c:0, fi:0, pill:'red', pillText:'skip tonight', tip:'Carbs are maxed — save the brownie for Thursday' }
+      ]},
+    { total: 1050, note: '~600 kcal remaining — cottage cheese, protein shake, or walnuts', noteType: 'green',
+      meals: [
+        { label: 'Cinnamon-walnut breakfast cake', desc: 'Breakfast · 1 slice + 2 eggs on the side', cal: 440, kcalLabel: 'cake + 2 eggs', p:21, f:24, c:38, fi:3, pill:'amber', pillText:'add eggs', tip:'Eggs are the protein anchor — don\'t skip them' },
+        { label: 'Leftover meatloaf', desc: 'Lunch · 1 serving, no extra mash', cal: 310, kcalLabel: 'per serving', p:30, f:13, c:18, fi:2, pill:'teal', pillText:'skip the mash', tip:'Saves ~200 kcal and keeps carbs in check after Wednesday' },
+        { label: 'Shrimp scampi zoodles', desc: 'Dinner · 1 serving (1/4 recipe)', cal: 320, kcalLabel: 'per serving', p:42, f:9, c:12, fi:3, pill:'purple', pillText:'best dinner of week', tip:'Outstanding — shrimp is the best high-protein, low-cal protein' },
+        { label: 'Black bean brownies', desc: 'Dessert · 1 piece — you\'ve earned it', cal: 130, kcalLabel: 'per piece', p:5, f:5, c:18, fi:3, pill:'green', pillText:'go for it', tip:'Best macro day of the week — Thursday is a brownie day' }
+      ]},
+    { total: 760, note: '~890 kcal remaining for dinner out — see restaurant tips', noteType: 'green',
+      meals: [
+        { label: 'Cinnamon-walnut breakfast cake', desc: 'Breakfast · 1 slice + 2 eggs on the side', cal: 440, kcalLabel: 'cake + 2 eggs', p:21, f:24, c:38, fi:3, pill:'teal', pillText:'good pre-dinner prep', tip:'Solid protein base before restaurant dinner' },
+        { label: 'Leftover shrimp scampi zoodles', desc: 'Lunch · 1 serving (1/4 recipe)', cal: 320, kcalLabel: 'per serving', p:42, f:9, c:12, fi:3, pill:'purple', pillText:'light + high protein', tip:'Keeps you from over-ordering at dinner' },
+        { label: 'Dinner out in Livonia', desc: 'Best: Mitchell\'s Seafood or J. Alexander\'s', cal: 0, kcalLabel: '~890 kcal budget', p:0, f:0, c:0, fi:0, pill:'amber', pillText:'~890 kcal left', tip:'Order: grilled fish/protein + veggies. Skip fries or share. No bread basket.' }
+      ]},
+    { total: 1340, note: 'Fat is over goal — skip the brownie and extra snacks tonight', noteType: 'amber',
+      meals: [
+        { label: 'Two eggs + avocado', desc: 'Breakfast · 2 large eggs + 1/2 avocado', cal: 290, kcalLabel: 'eggs + avo', p:14, f:22, c:6, fi:5, pill:'green', pillText:'best breakfast of week', tip:'Clean, no sugar, healthy fats — great habit' },
+        { label: 'Tuna salad', desc: 'Lunch · ~5oz tuna, light mayo, celery on lettuce', cal: 280, kcalLabel: 'estimated', p:34, f:10, c:6, fi:1, pill:'purple', pillText:'protein powerhouse', tip:'Skip crackers or use just a few to keep carbs low' },
+        { label: 'Mini burgers + oven fries', desc: 'Dinner · 3 patties + chipotle mayo + fries', cal: 770, kcalLabel: '3 patties + fries', p:42, f:45, c:48, fi:6, pill:'amber', pillText:'watch the mayo', tip:'Go light on chipotle mayo and drizzle oil on fries' },
+        { label: 'Black bean brownies', desc: 'Dessert · skip tonight', cal: 0, kcalLabel: 'skip tonight', p:0, f:0, c:0, fi:0, pill:'red', pillText:'skip tonight', tip:'Fat is already at limit from avocado + burger toppings' }
+      ]},
+    { total: 1180, note: '~470 kcal remaining — great low-carb Sunday. Protein shake to close out', noteType: 'green',
+      meals: [
+        { label: 'Two eggs + avocado', desc: 'Breakfast · 2 large eggs + 1/2 avocado', cal: 290, kcalLabel: 'eggs + avo', p:14, f:22, c:6, fi:5, pill:'green', pillText:'clean start', tip:'Consistent clean start — great habit to carry into next week' },
+        { label: 'Tuna salad', desc: 'Lunch · ~5oz tuna, light mayo, celery on lettuce', cal: 280, kcalLabel: 'estimated', p:34, f:10, c:6, fi:1, pill:'teal', pillText:'reliable', tip:'Same great lunch — tuna two days in a row is totally fine' },
+        { label: 'Leftover mini burgers', desc: 'Dinner · 3 patties, no fries this time', cal: 480, kcalLabel: '3 patties + toppings', p:42, f:30, c:10, fi:3, pill:'green', pillText:'no fries Sunday', tip:'Skipping fries keeps fat in check — add a side salad if still hungry' },
+        { label: 'Black bean brownies', desc: 'Dessert · 1 piece', cal: 130, kcalLabel: 'per piece', p:5, f:5, c:18, fi:3, pill:'green', pillText:'go for it', tip:'Sunday is the right day — lowest carb day of the weekend' }
+      ]}
+  ],
+  kelsey: [
+    { total: 920, note: '~530 kcal remaining — room for 2 healthy snacks', noteType: 'green',
+      meals: [
+        { label: 'Veggie frittata', desc: 'Breakfast · 1 serving', cal: 220, kcalLabel: 'per serving', p:17, f:12, c:7, fi:2, pill:'teal', pillText:'right size for Kelsey', tip:'1 serving is appropriate for Kelsey\'s calorie target' },
+        { label: 'Turkey spinach burgers', desc: 'Lunch · 1 patty', cal: 210, kcalLabel: 'per patty', p:22, f:11, c:7, fi:1, pill:'teal', pillText:'good lunch', tip:'Add extra veggies if still hungry' },
+        { label: 'Drumstick + green beans', desc: 'Dinner · 1 drumstick + 1 serving green beans', cal: 360, kcalLabel: 'combined', p:31, f:18, c:13, fi:4, pill:'teal', pillText:'great dinner', tip:'Filling, fiber-rich, and well-balanced' },
+        { label: 'Black bean brownies', desc: 'Dessert · 1 piece', cal: 130, kcalLabel: 'per piece', p:5, f:5, c:18, fi:3, pill:'green', pillText:'go for it', tip:'Monday is a brownie day — budget allows it' }
+      ]},
+    { total: 1240, note: 'Fat near goal due to matcha — no brownie, avoid added oils', noteType: 'amber',
+      meals: [
+        { label: 'Starbucks venti iced matcha', desc: 'Morning · oat milk — ask for 1 pump syrup', cal: 280, kcalLabel: 'venti oat milk', p:7, f:7, c:45, fi:0, pill:'amber', pillText:'1 pump syrup', tip:'Default is 4 pumps — ask for 1 to cut ~100 kcal and 12g sugar' },
+        { label: 'Veggie frittata', desc: 'Breakfast · 1 serving (matcha fills morning cals)', cal: 220, kcalLabel: 'per serving', p:17, f:12, c:7, fi:2, pill:'teal', pillText:'1 serving only', tip:'The matcha fills morning calories — don\'t double up' },
+        { label: 'Leftover drumstick + green beans', desc: 'Lunch · reheated from Monday', cal: 360, kcalLabel: 'combined', p:31, f:18, c:13, fi:4, pill:'teal', pillText:'keep as-is', tip:'Good protein lunch — keep the portion as-is today' },
+        { label: 'Classic pot roast', desc: 'Dinner · 1 serving (1/8 recipe)', cal: 380, kcalLabel: 'per serving', p:38, f:14, c:22, fi:4, pill:'amber', pillText:'skip brownie', tip:'Skip brownie tonight — pot roast + matcha fills the day' }
+      ]},
+    { total: 1180, note: '~270 kcal left — protein only. No more carbs today', noteType: 'amber',
+      meals: [
+        { label: 'Cinnamon-walnut breakfast cake', desc: 'Breakfast · 1 slice + 2 eggs on the side', cal: 440, kcalLabel: 'cake + 2 eggs', p:21, f:24, c:38, fi:3, pill:'amber', pillText:'add eggs', tip:'1 slice max — eggs essential for protein balance' },
+        { label: 'Leftover pot roast', desc: 'Lunch · 1 serving (1/8 recipe)', cal: 380, kcalLabel: 'per serving', p:38, f:14, c:22, fi:4, pill:'teal', pillText:'protein anchor', tip:'Don\'t skip this — it\'s the protein anchor for the day' },
+        { label: 'Meatloaf + 1/2 serving mash', desc: 'Dinner · full meatloaf serving, half the mash', cal: 410, kcalLabel: 'meatloaf + 1/2 mash', p:33, f:14, c:33, fi:3, pill:'amber', pillText:'half mash only', tip:'Kelsey: half portion of mash — carbs are maxed by dinner' },
+        { label: 'Black bean brownies', desc: 'Dessert · skip tonight', cal: 0, kcalLabel: 'skip tonight', p:0, f:0, c:0, fi:0, pill:'red', pillText:'skip tonight', tip:'Carbs and fat are at limit today' }
+      ]},
+    { total: 1050, note: '~400 kcal remaining — Greek yogurt or protein shake to close protein goal', noteType: 'green',
+      meals: [
+        { label: 'Cinnamon-walnut breakfast cake', desc: 'Breakfast · 1 slice + 2 eggs on the side', cal: 440, kcalLabel: 'cake + 2 eggs', p:21, f:24, c:38, fi:3, pill:'amber', pillText:'add eggs', tip:'Same as yesterday — eggs are the protein anchor' },
+        { label: 'Leftover meatloaf', desc: 'Lunch · 1 serving, no mash', cal: 310, kcalLabel: 'per serving', p:30, f:13, c:18, fi:2, pill:'teal', pillText:'no mash today', tip:'Keeps carbs balanced after Wednesday' },
+        { label: 'Shrimp scampi zoodles', desc: 'Dinner · 1 serving (1/4 recipe)', cal: 320, kcalLabel: 'per serving', p:42, f:9, c:12, fi:3, pill:'purple', pillText:'best dinner of week', tip:'Perfect Thursday dinner — high protein, low carb, light fat' },
+        { label: 'Black bean brownies', desc: 'Dessert · 1 piece', cal: 130, kcalLabel: 'per piece', p:5, f:5, c:18, fi:3, pill:'green', pillText:'go for it', tip:'Kelsey has room today — Thursday is brownie day' }
+      ]},
+    { total: 760, note: '~690 kcal remaining for dinner — grilled fish + salad is ~500 kcal', noteType: 'green',
+      meals: [
+        { label: 'Cinnamon-walnut breakfast cake', desc: 'Breakfast · 1 slice + 2 eggs on the side', cal: 440, kcalLabel: 'cake + 2 eggs', p:21, f:24, c:38, fi:3, pill:'teal', pillText:'good pre-dinner prep', tip:'Solid protein base for a night out' },
+        { label: 'Leftover shrimp scampi zoodles', desc: 'Lunch · 1 serving (1/4 recipe)', cal: 320, kcalLabel: 'per serving', p:42, f:9, c:12, fi:3, pill:'purple', pillText:'smart light lunch', tip:'Leaves good room for dinner out' },
+        { label: 'Dinner out in Livonia', desc: 'Request sauces on side, protein + veggies base', cal: 0, kcalLabel: '~690 kcal budget', p:0, f:0, c:0, fi:0, pill:'amber', pillText:'~690 kcal left', tip:'Grilled fish + salad ~500 kcal. 1 light drink max. Skip or split appetizers.' }
+      ]},
+    { total: 1180, note: 'Fat over goal — 2 patties only, very light on chipotle mayo', noteType: 'amber',
+      meals: [
+        { label: 'Two eggs + avocado', desc: 'Breakfast · 2 large eggs + 1/2 avocado', cal: 290, kcalLabel: 'eggs + avo', p:14, f:22, c:6, fi:5, pill:'green', pillText:'clean start', tip:'Best breakfast of the week' },
+        { label: 'Tuna salad', desc: 'Lunch · ~5oz tuna, light mayo, celery on lettuce', cal: 280, kcalLabel: 'estimated', p:34, f:10, c:6, fi:1, pill:'purple', pillText:'best lunch of week', tip:'34g protein for 280 kcal — exceptional' },
+        { label: 'Mini burgers + oven fries', desc: 'Dinner · 2 patties only + light mayo + small fries', cal: 610, kcalLabel: '2 patties + fries', p:30, f:35, c:40, fi:5, pill:'amber', pillText:'2 patties max', tip:'Kelsey: 2 patties, very light chipotle mayo, smaller fry portion' },
+        { label: 'Black bean brownies', desc: 'Dessert · skip tonight', cal: 0, kcalLabel: 'skip tonight', p:0, f:0, c:0, fi:0, pill:'red', pillText:'skip tonight', tip:'Fat budget is maxed from avocado + burger toppings' }
+      ]},
+    { total: 1020, note: '~430 kcal remaining — add a protein snack to close out protein goal', noteType: 'green',
+      meals: [
+        { label: 'Two eggs + avocado', desc: 'Breakfast · 2 large eggs + 1/2 avocado', cal: 290, kcalLabel: 'eggs + avo', p:14, f:22, c:6, fi:5, pill:'green', pillText:'clean finish', tip:'Perfect consistent close to the week' },
+        { label: 'Tuna salad', desc: 'Lunch · ~5oz tuna, light mayo, celery on lettuce', cal: 280, kcalLabel: 'estimated', p:34, f:10, c:6, fi:1, pill:'teal', pillText:'reliable', tip:'Tuna two days in a row is efficient and fine' },
+        { label: 'Leftover mini burgers', desc: 'Dinner · 2 patties, light mayo, no fries', cal: 320, kcalLabel: '2 patties + toppings', p:28, f:20, c:8, fi:2, pill:'green', pillText:'no fries Sunday', tip:'2 patties for Kelsey — keeps fat in check' },
+        { label: 'Black bean brownies', desc: 'Dessert · 1 piece', cal: 130, kcalLabel: 'per piece', p:5, f:5, c:18, fi:3, pill:'green', pillText:'earned it', tip:'Great week for Kelsey — Sunday brownie is well deserved' }
+      ]}
+  ]
+};
+
+function pillClass(t) {
+  return {green:'pill-green',amber:'pill-amber',red:'pill-red',teal:'pill-teal',purple:'pill-purple'}[t]||'pill-teal';
+}
+function remClass(t) {
+  return {green:'rem-tag pill-green',amber:'rem-tag pill-amber',red:'rem-tag pill-red'}[t]||'rem-tag pill-teal';
+}
+
+function renderDay(p, i) {
+  var d = data[p][i];
+  var html = '';
+  d.meals.forEach(function(m) {
+    if (m.cal === 0 && m.p === 0) {
+      html += '<div class="meal-row"><div class="meal-top"><div><div class="meal-name">'+m.label+'</div><div class="meal-desc">'+m.desc+'</div></div><div class="meal-cal">'+m.kcalLabel+'</div></div>';
+      html += '<div class="side-note">'+m.tip+'</div>';
+      html += '<div style="margin-top:6px"><span class="pill '+pillClass(m.pill)+'">'+m.pillText+'</span></div></div>';
+    } else {
+      html += '<div class="meal-row"><div class="meal-top"><div><div class="meal-name">'+m.label+'</div><div class="meal-desc">'+m.desc+'</div></div><div class="meal-cal">'+m.cal+' kcal<span>'+m.kcalLabel+'</span></div></div>';
+      html += '<div class="macros"><div class="mp"><div class="mv">'+m.p+'g</div><div class="ml">Protein</div></div><div class="mp"><div class="mv">'+m.f+'g</div><div class="ml">Fat</div></div><div class="mp"><div class="mv">'+m.c+'g</div><div class="ml">Carbs</div></div><div class="mp"><div class="mv">'+m.fi+'g</div><div class="ml">Fiber</div></div></div>';
+      html += '<div><span class="pill '+pillClass(m.pill)+'">'+m.pillText+'</span><span class="tip-text">'+m.tip+'</span></div></div>';
+    }
+  });
+  var totalP=d.meals.reduce(function(s,m){return s+m.p;},0);
+  var totalF=d.meals.reduce(function(s,m){return s+m.f;},0);
+  var totalC=d.meals.reduce(function(s,m){return s+m.c;},0);
+  var totalFi=d.meals.reduce(function(s,m){return s+m.fi;},0);
+  html+='<div class="divider"></div><div class="total-box"><div class="total-top"><span class="total-lbl">Day total</span><span class="total-val">'+d.total+' kcal</span></div>';
+  html+='<div class="macro-line"><span>Protein <b>'+totalP+'g</b></span><span>Fat <b>'+totalF+'g</b></span><span>Carbs <b>'+totalC+'g</b></span><span>Fiber <b>'+totalFi+'g</b></span></div>';
+  html+='<span class="'+remClass(d.noteType)+'">'+d.note+'</span></div>';
+  return html;
+}
+
+function buildNav(p) {
+  var nav = document.getElementById('day-nav-'+p);
+  nav.innerHTML = '';
+  DAYS.forEach(function(d, i) {
+    var btn = document.createElement('button');
+    btn.className = 'dnav'+(i===dayIdx[p]?' active':'');
+    btn.textContent = d+' '+DATES[i].split(' ')[1];
+    btn.onclick = (function(idx){ return function(){ dayIdx[p]=idx; buildNav(p); document.getElementById('day-content-'+p).innerHTML=renderDay(p,idx); }; })(i);
+    nav.appendChild(btn);
+  });
+}
+
+function setPerson(p) {
+  ['you','kelsey','week'].forEach(function(x){
+    document.getElementById('ptab-'+x).className='ptab'+(x===p?' active':'');
+    var el=document.getElementById('content-'+x);
+    if(el) el.style.display=x===p?'block':'none';
+  });
+}
+
+buildNav('you');
+buildNav('kelsey');
+document.getElementById('day-content-you').innerHTML=renderDay('you',0);
+document.getElementById('day-content-kelsey').innerHTML=renderDay('kelsey',0);
+</script>
+</body>
+</html>
